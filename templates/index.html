@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CopBot FIR Assistant</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- HEADER -->
+        <div class="top-bar">
+
+            <div class="logo-section">
+
+                <div class="logo-icon">👮</div>
+
+                <div>
+
+                    <h1>COPBOT AI</h1>
+
+                    <p>FIR DRAFTING ASSISTANT • SECURE CHANNEL</p>
+
+                </div>
+
+            </div>
+
+            <div class="live-status">
+
+                <span class="green-dot"></span>
+
+                SYSTEM ACTIVE • <span id="live-clock"></span>
+
+            </div>
+
+        </div>
+
+        <!-- LANGUAGE SELECTION -->
+        <div class="language-box">
+
+            <form method="POST">
+
+                <button
+                    type="submit"
+                    name="language"
+                    value="english"
+                    class="lang-btn"
+                >
+                    🇬🇧 ENGLISH
+                </button>
+
+                <button
+                    type="submit"
+                    name="language"
+                    value="tamil"
+                    class="lang-btn"
+                >
+                    🇮🇳 தமிழ்
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- CHAT AREA -->
+        <div class="chat-container" id="chat-box">
+
+            {% for chat in chat_history %}
+
+            <!-- BOT MESSAGE -->
+            <div class="bot-wrapper">
+
+                <div class="bot-message">
+
+                    <div class="message-label">BOT</div>
+
+                    <div class="message-text">
+
+                        🤖 {{ chat.question }}
+
+                    </div>
+
+                    <span class="chat-time"></span>
+
+                </div>
+
+            </div>
+
+            <!-- USER MESSAGE -->
+            <div class="user-wrapper">
+
+                <div class="user-message">
+
+                    <div class="message-label user-label">YOU</div>
+
+                    <div class="message-text">
+
+                        {{ chat.answer }}
+
+                    </div>
+
+                    <span class="chat-time"></span>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+            <!-- CURRENT BOT QUESTION -->
+            <div class="bot-wrapper">
+
+                <div class="bot-message">
+
+                    <div class="message-label">BOT</div>
+
+                    <div class="typing">••• ANALYZING...</div>
+
+                    <div class="message-text">
+
+                        🤖 {{ current_question }}
+
+                    </div>
+
+                    <span class="chat-time"></span>
+
+                </div>
+
+            </div>
+
+            <!-- PREDICTION -->
+            {% if prediction %}
+
+            <div class="result-box">
+
+                <h2>Predicted Crime Category</h2>
+
+                <p>{{ prediction }}</p>
+
+            </div>
+
+            {% endif %}
+
+            <!-- FIR OUTPUT -->
+            {% if fir_text %}
+
+            <div class="fir-box">
+
+                <h2>Generated FIR Report</h2>
+
+                <pre>{{ fir_text }}</pre>
+
+                <a href="/download">
+
+                    <button class="download-btn">
+
+                        Download FIR PDF
+
+                    </button>
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- INPUT AREA -->
+        <form method="POST" class="input-area">
+
+            <!-- FILE UPLOAD -->
+            <label for="file-upload" class="upload-btn">
+
+                📎
+
+            </label>
+
+            <input type="file" id="file-upload" hidden>
+
+            <!-- TEXT INPUT -->
+            <input
+                type="text"
+                name="complaint"
+                placeholder="Type your response here..."
+                required
+            >
+
+            <!-- SEND BUTTON -->
+            <button type="submit" class="send-btn">
+
+                SEND ›
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
